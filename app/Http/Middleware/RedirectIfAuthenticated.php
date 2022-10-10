@@ -23,7 +23,21 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // return redirect(RouteServiceProvider::HOME);
+                 //make it dynamic routing based on link from db
+                $role = Auth::user()->role->slug; 
+                switch ($role) {
+                case 'administrator':
+                    return '/administrator/dashboard';
+                    break;
+                case 'patient':
+                    return '/patient/dashboard';
+                    break; 
+            
+                default:
+                    return '/home'; 
+                break;
+                }
             }
         }
 
